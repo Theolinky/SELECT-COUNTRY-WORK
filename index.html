@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Country Dropdown</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container"> 
+        <label for="countrySearch">Country</label>
+
+        <!-- Custom Searchable Country Dropdown Component -->
+        <div class="country-dropdown">
+            <!-- Selected country display box -->
+            <div id="selectedCountry" class="selected-country" tabindex="0" role="combobox" aria-expanded="false" aria-controls="countryDropdown">
+                Select Country
+            </div>
+
+            <!-- Dropdown box containing search input and country list -->
+            <div id="countryDropdown" class="dropdown-content">
+                <!-- Search Bar Input -->
+                <input
+                    type="text"
+                    id="countrySearch"
+                    placeholder="Search country..."
+                    autocomplete="off">
+
+                <!-- Dynamic Country List Container -->
+                <div id="countryList"></div>
+            </div>
+        </div>
+        
+        <br><br>
+
+        <!-- State Section -->
+        <label for="state">State</label>
+        <select id="state">
+            <option value="">Select State</option>
+        </select>
+
+        <input
+            type="text"
+            id="stateInput"
+            placeholder="Enter your state"
+            style="display: none;">
+
+        <br><br>
+
+        <!-- City Section -->
+        <label for="city">City</label>
+        <select id="city">
+            <option value="">Select City</option>
+        </select>
+
+        <input
+            type="text"
+            id="cityInput"
+            placeholder="Enter your city"
+            style="display: none;">
+    </div>
+
+    <script>
+        // ==========================================
+        // DATA OBJECTS & ARRAYS
+        // ==========================================
+        const countryNames = [
+            "Nigeria",
+            "Ghana",
+            "United States",
+            "Canada",
+            "United Kingdom",
+            "South Africa",
+            "Kenya",
+            "India",
+            "China",
+            "Brazil"
+        ];
+
+        const countries = {
+            Nigeria: {
+                Lagos: ["Ikeja", "Ikorodu", "Epe"],
+                Oyo: ["Ibadan", "Ogbomosho", "Oyo"],
+                Ekiti: ["Ado-Ekiti", "Ikole", "Ikere"]
+            },
+            Ghana: {
+                "Greater Accra": ["Accra", "Tema", "Madina"],
+                Ashanti: ["Kumasi", "Obuasi", "Ejisu"]
+            }
+        };
+
+        // ==========================================
+        // DOM ELEMENTS RETRIEVAL
+        // ==========================================
+        const state = document.getElementById("state");
+        const city = document.getElementById("city");
+        const stateInput = document.getElementById("stateInput");
+        const cityInput = document.getElementById("cityInput");
+        const countryList = document.getElementById("countryList");
+        const selectedCountry = document.getElementById("selectedCountry");
+        const countryDropdown = document.getElementById("countryDropdown");
+        const countrySearch = document.getElementById("countrySearch");
+
+        // ==========================================
+        // STATE MANAGEMENT VARIABLES
+        // ==========================================
+        let selectedCountryValue = "";
+
+        // ==========================================
+        // CORE FUNCTIONS
+        // ==========================================
+
+        /**
+         * Clears all state and city dropdowns or text inputs
+         */
+        function resetFields() {
+            state.length = 1;
+            city.length = 1;
+
+            state.selectedIndex = 0;
+            city.selectedIndex = 0;
+
+            stateInput.value = "";
+            cityInput.value = "";
+        }
+
+        /**
+         * Renders the country list dynamically based on search text input
+         * @param {string} searchText - The filter string typed into the search bar
+         */
+        function displayCountries(searchText = "") {
+            countryList.innerHTML = "";
+            let found = false;
+
+            countryNames.forEach(function (countryName) {
+                if (countryName.toLowerCase().includes(searchText.toLowerCase())) {
+                    found = true;
+                    const item = document.createElement("div");
+                    item.textContent = countryName;
+                    item.classList.add("country-item");
+                    item.setAttribute("tabindex", "0"); // Makes items keyboard accessible
+
+                    // Selection handler for each country item
+                    const selectThisCountry = function () {
+                        selectedCountryValue = countryName;
+                        selectedCountry.textContent = countryName;
+                        countryDropdown.style.display = "none";
+                        selectedCountry.setAttribute("aria-expanded", "false");
+                        countrySearch.value = "";
+                        
+                        // Auto clear state and city fields
+                        resetFields();
+
+                        // Configure UI based on country rules (Nigeria uses dropdowns, others use text inputs)
+                        if (selectedCountryValue === "Nigeria") {
+                            state.style.display = "block";
+                            city.style.display = "block";
+                            stateInput.style.display = "none";
+                            cityInput.style.display = "none";
+
+                            loadStates(selectedCountryValue);
+                            state.focus(); // Auto focus on state dropdown
+                            return;
+                        }
+
+                        // Fallback logic for Ghana and other countries
+                        state.style.display = "none";
+                        city.style.display = "none";
+                        stateInput.style.display = "block";
+                        cityInput.style.display = "block";
+                        stateInput.focus(); // Auto focus on state text input
+                    };
+
+                    // Click event listener
+                    item.addEventListener("click", selectThisCountry);
+
+                    // Keyboard support: Enter key selects the item
+                    item.addEventListener("keydown", function (e) {
+                        if (e.key === "Enter") {
+                            selectThisCountry();
+                        }
+                    });
+
+                    countryList.appendChild(item);
+                }
+            });
+
+            // Handle "Country not found" state view
+            if (!found) {
+                const notFound = document.createElement("div");
+                notFound.textContent = "Country not found";
+                notFound.classList.add("country-not-found");
+                countryList.appendChild(notFound);
+            }
+        }
+
+        /**
+         * Populates the state dropdown container with region keys
+         * @param {string} countryKey - The selected country name
+         */
+        function loadStates(countryKey) {
+            const states = countries[countryKey];
+            if (!states) return;
+            for (let singleState in states) {
+                const option = document.createElement("option");
+                option.textContent = singleState;
+                option.value = singleState;
+                state.appendChild(option);
+            }
+        }
+
+        /**
+         * Populates the city dropdown container based on selected state key
+         * @param {string} countryKey - The selected country name
+         * @param {string} selectedState - The selected state name
+         */
+        function loadCities(countryKey, selectedState) {
+            const cities = countries[countryKey]?.[selectedState];
+            if (!cities) return;
+            for (let singleCity of cities) {
+                const option = document.createElement("option");
+                option.textContent = singleCity;
+                option.value = singleCity;
+                city.appendChild(option);
+            }
+        }
+
+        // ==========================================
+        // INITIALIZATION & EVENT LISTENERS
+        // ==========================================
+
+        // Initial render execution
+        displayCountries();
+
+        // Real-time search filtering listener
+        countrySearch.addEventListener("input", function () {
+            displayCountries(countrySearch.value);
+        });
+
+        // Toggle dropdown open/close on clicking the selected country display container
+        selectedCountry.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const isOpen = countryDropdown.style.display === "block";
+            
+            if (isOpen) {
+                countryDropdown.style.display = "none";
+                selectedCountry.setAttribute("aria-expanded", "false");
+            } else {
+                countrySearch.value = "";
+                displayCountries();
+                countryDropdown.style.display = "block";
+                selectedCountry.setAttribute("aria-expanded", "true");
+                countrySearch.focus(); // Auto focus on search bar when opened
+            }
+        });
+
+        // Keyboard accessibility: Open dropdown using Enter or Space on selected country box
+        selectedCountry.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                selectedCountry.click();
+            }
+        });
+
+        // Close dropdown automatically when clicking outside component boundaries
+        document.addEventListener("click", function (event) {
+            if (!event.target.closest(".country-dropdown")) {
+                countryDropdown.style.display = "none";
+                selectedCountry.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        // State change dependency listener for loading corresponding cities
+        state.addEventListener("change", function () {
+            const currentCountry = selectedCountryValue;
+            const selectedState = state.value;
+            city.length = 1;
+
+            if (selectedState === "") {
+                return;
+            } 
+
+            loadCities(currentCountry, selectedState);
+        });
+    </script>
+</body>
+</html>

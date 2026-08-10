@@ -1,0 +1,108 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
+
+}
+body{
+    background: rgb(89, 0, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container{
+    background: white;
+    width: 400px;
+    padding: 30px;
+    border-radius: 10px;
+
+}
+
+
+/* Hide the dropdown content by default */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    width: 110%;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Make sure the parent container is relative so the dropdown stays right underneath */
+.country-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 90%;
+   
+    
+}
+#searchCountry, input{
+    width: 100%;
+      padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+
+}
+/* Style the selected display box */
+.selected-country {
+      width: 110%;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    border: 1px solid  ;
+}
+
+/* Style individual country items inside the list */
+.country-item {
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.country-item:hover {
+    background-color: #3d40ec;
+    color: #ffffff;
+}
+
+/* Style for the "Country not found" text */
+.country-not-found {
+    padding: 8px 10px;
+    color: #888;
+    font-style: italic;
+}
+
+h1{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label{
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+
+}
+
+#stateInput, #cityInput{
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+select{
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    
+}
