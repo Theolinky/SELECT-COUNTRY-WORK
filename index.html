@@ -8,15 +8,21 @@
 </head>
 
 <body>
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Country Dropdown</title>
 
+    <link rel="stylesheet" href="style.css">
+</head>
 
-
-  
+<body>
 
     <!-- ===========================
          LOADER
     ============================ -->
-
     <div id="loader">
 
         <div class="spinner"></div>
@@ -25,66 +31,147 @@
 
     </div>
 
-
     <!-- ===========================
          PAGE CONTENT
     ============================ -->
-
     <div id="pageContent">
 
-      
-    <div class="container"> 
-        <label for="countrySearch">Country</label>
+        <div class="container">
 
-        <!-- Custom Searchable Country Dropdown Component -->
-        <div class="country-dropdown">
-            <!-- Selected country display box -->
-            <div id="selectedCountry" class="selected-country" tabindex="0" role="combobox" aria-expanded="false" aria-controls="countryDropdown">
-                Select Country
+            <!-- ===========================
+                 TOGGLE
+            ============================ -->
+            <div class="toggle-wrapper">
+
+                <span>Location</span>
+
+                <label class="switch">
+                    <input type="checkbox" id="formToggle">
+                    <span class="slider-toggle"></span>
+                </label>
+
+                <span>Personal Details</span>
+
             </div>
 
-            <!-- Dropdown box containing search input and country list -->
-            <div id="countryDropdown" class="dropdown-content">
-                <!-- Search Bar Input -->
+            <!-- ===========================
+                 FORM ONE
+            ============================ -->
+            <div class="form-panel active" id="formOne">
+
+                <label for="countrySearch">Country</label>
+
+                <div class="country-dropdown">
+
+                    <div
+                        id="selectedCountry"
+                        class="selected-country"
+                        tabindex="0"
+                        role="combobox"
+                        aria-expanded="false"
+                        aria-controls="countryDropdown">
+
+                        Select Country
+
+                    </div>
+
+                    <div id="countryDropdown" class="dropdown-content">
+
+                        <input
+                            type="text"
+                            id="countrySearch"
+                            placeholder="Search country..."
+                            autocomplete="off">
+
+                        <div id="countryList"></div>
+
+                    </div>
+
+                </div>
+
+                <br><br>
+
+                <label for="state">State</label>
+
+                <select id="state">
+
+                    <option value="">Select State</option>
+
+                </select>
+
                 <input
                     type="text"
-                    id="countrySearch"
-                    placeholder="Search country..."
-                    autocomplete="off">
+                    id="stateInput"
+                    placeholder="Enter your state"
+                    style="display:none;">
 
-                <!-- Dynamic Country List Container -->
-                <div id="countryList"></div>
+                <br><br>
+
+                <label for="city">City</label>
+
+                <select id="city">
+
+                    <option value="">Select City</option>
+
+                </select>
+
+                <input
+                    type="text"
+                    id="cityInput"
+                    placeholder="Enter your city"
+                    style="display:none;">
+
             </div>
+
+            <!-- ===========================
+                 FORM TWO
+            ============================ -->
+
+            <div class="form-panel" id="formTwo">
+
+                <label for="firstName">First Name</label>
+
+                <input
+                    type="text"
+                    id="firstName"
+                    placeholder="Enter First Name">
+
+                <br><br>
+
+                <label for="lastName">Last Name</label>
+
+                <input
+                    type="text"
+                    id="lastName"
+                    placeholder="Enter Last Name">
+
+                <br><br>
+
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter Email Address">
+
+                <br><br>
+
+                <label for="phone">Phone Number</label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter Phone Number">
+
+            </div>
+
         </div>
-        
-        <br><br>
 
-        <!-- State Section -->
-        <label for="state">State</label>
-        <select id="state">
-            <option value="">Select State</option>
-        </select>
-
-        <input
-            type="text"
-            id="stateInput"
-            placeholder="Enter your state"
-            style="display: none;">
-
-        <br><br>
-
-        <!-- City Section -->
-        <label for="city">City</label>
-        <select id="city">
-            <option value="">Select City</option>
-        </select>
-
-        <input
-            type="text"
-            id="cityInput"
-            placeholder="Enter your city"
-            style="display: none;">
     </div>
+
+  
+</body>
+</html>
 
     <script>
         // ==========================================
@@ -127,6 +214,38 @@
         const countryDropdown = document.getElementById("countryDropdown");
         const countrySearch = document.getElementById("countrySearch");
 
+        // Toggle Elements
+                // Toggle Elements
+        const formToggle = document.getElementById("formToggle");
+        const formOne = document.getElementById("formOne");
+        const formTwo = document.getElementById("formTwo");
+
+
+        // ===========================
+// FORM TOGGLE
+// ===========================
+
+formToggle.addEventListener("change", function () {
+
+    if (this.checked) {
+
+        // Hide Form One
+        formOne.classList.remove("active");
+
+        // Show Form Two
+        formTwo.classList.add("active");
+
+    } else {
+
+        // Hide Form Two
+        formTwo.classList.remove("active");
+
+        // Show Form One
+        formOne.classList.add("active");
+
+    }
+
+});
         // ==========================================
         // STATE MANAGEMENT VARIABLES
         // ==========================================
@@ -310,6 +429,7 @@
         });
 
 
+
         // ===========================
 // LOADER
 // ===========================
@@ -335,5 +455,10 @@ window.addEventListener("load", function () {
 
 });
     </script>
+
+
+
+
+        
 </body>
 </html>
