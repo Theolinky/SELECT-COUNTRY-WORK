@@ -1,3 +1,12 @@
+html,
+body{
+
+overflow-x:hidden;
+
+}
+
+
+
 *{
     margin: 0;
     padding: 0;
@@ -5,21 +14,26 @@
     box-sizing: border-box;
 
 }
+
 body{
-    background: rgb(89, 0, 255);
+    background: rgb(89,0,255);
+
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+
+    min-height: 100vh;
+
+    padding: 20px;
 }
 
 .container{
     background: white;
-    width: 400px;
+    width: 100%;
+    max-width: 420px;
     padding: 30px;
     border-radius: 10px;
-
-}
+}   
 
 
 /* Hide the dropdown content by default */
@@ -44,7 +58,7 @@ body{
     
 }
 #searchCountry, input{
-    width: 100%;
+    width: 110%;
       padding: 12px;
     border-radius: 6px;
     cursor: pointer;
@@ -97,6 +111,12 @@ label{
     border-radius: 6px;
     font-size: 16px;
     margin-bottom: 10px;
+}
+
+input,
+select,
+.selected-country{
+    width:100%;
 }
 select{
     width: 100%;
@@ -179,8 +199,8 @@ input:checked + .slider-toggle:before {
 
 .spinner{
 
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
 
     border: 8px solid #dddddd;
 
@@ -188,7 +208,7 @@ input:checked + .slider-toggle:before {
 
     border-radius: 50%;
 
-    animation: spin 1s linear infinite;
+    animation: spin 1s linear;
 
 }
 
@@ -245,6 +265,119 @@ input:checked + .slider-toggle:before {
     to{
 
         transform: rotate(360deg);
+
+    }
+
+}
+
+
+
+/* ===========================
+   MOBILE RESPONSIVE
+=========================== */
+
+@media (max-width: 768px){
+
+    .container{
+
+        padding:20px;
+
+    }
+
+    h1{
+
+        font-size:24px;
+
+    }
+
+    label{
+
+        font-size:14px;
+
+    }
+
+    input,
+    select,
+    .selected-country{
+
+        font-size:14px;
+
+        padding:10px;
+
+    }
+
+    .toggle-wrapper{
+
+        flex-direction:column;
+
+        gap:5px;
+
+    }
+
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media screen and (max-width:480px){
+
+    .container{
+
+        padding:20px;
+
+    }
+
+    label{
+
+        font-size:14px;
+
+    }
+
+    input,
+    select,
+    .selected-country{
+
+        font-size:14px;
+        padding:10px;
+
+    }
+
+    .toggle-wrapper{
+
+        flex-direction:column;
+
+        gap:12px;
+
+    }
+
+}
+
+
+/* ===========================
+   TABLET
+=========================== */
+
+@media screen and (min-width:481px) and (max-width:768px){
+
+    .container{
+
+        max-width:500px;
+
+    }
+
+}
+
+/* ===========================
+   LAPTOP
+=========================== */
+
+@media screen and (min-width:769px){
+
+    .container{
+
+        max-width:450px;
 
     }
 
